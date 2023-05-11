@@ -10,7 +10,7 @@ Libraries: `SDL2`.
 
 ### Linux
 
-Build program by running `pkg/linux.sh`.
+Build program by running `cmake -B .linux && cmake --build .linux`.
 
 Run via `.linux/raycasting`.
 
@@ -20,9 +20,9 @@ Requires `flatpak` and `flatpak-builder` to be installed.
 
 Install flatpak dependencies by running `flatpak install flathub org.freedesktop.Platform//22.08 org.freedesktop.Sdk//22.08`.
 
-Build and install program by running `pkg/flatpak.sh`.
+Build program by running `flatpak-builder --force-clean .flatpak pkg/it.joysf.raycasting.yml`.
 
-Run via `flatpak run it.joysf.raycasting`.
+Run via `flatpak-builder --run .flatpak .flatpak/files/manifest.json raycasting`.
 
 ### Emscripten
 
