@@ -1,0 +1,22 @@
+app-id: it.joysf.raycasting
+runtime: org.freedesktop.Platform
+runtime-version: '22.08'
+sdk: org.freedesktop.Sdk
+command: raycasting
+
+modules:
+  - name: raycasting
+    buildsystem: cmake
+    sources:
+      - type: git
+        url: https://github.com/J0ySF/raycasting.git
+        branch: main
+    builddir: true
+
+finish-args:
+  - --device=all
+  - --share=ipc
+  - --share=network
+  - --socket=x11
+  - --socket=pulseaudio
+  - --filesystem=home
