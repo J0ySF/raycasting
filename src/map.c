@@ -26,54 +26,53 @@ void map_destroy() {
 
 void map_cast_ray(float position_x, float position_y, float direction_x, float direction_y, float *perspective_distance,
                   tile_t *tile, int *side) {
-    int mapX = (int)position_x;
-    int mapY = (int)position_y;
+    int map_x = (int)position_x;
+    int map_y = (int)position_y;
 
-    float sideDistX;
-    float sideDistY;
+    float delta_distance_x = fabsf(1.0f / direction_x);
+    float delta_distance_y = fabsf(1.0f / direction_y);
 
-    float deltaDistX = (direction_x == 0) ? 1e30f : fabsf(1.0f / direction_x);
-    float deltaDistY = (direction_y == 0) ? 1e30f : fabsf(1.0f / direction_y);
-
-    int stepX;
-    int stepY;
+    float distance_x;
+    float distance_y;
+    int step_x;
+    int step_y;
 
     int hit = 0;
     if(direction_x < 0) {
-        stepX = -1;
-        sideDistX = (position_x - (float)mapX) * deltaDistX;
+        step_x = -1;
+        distance_x = (position_x - (float)map_x) * delta_distance_x;
     }
     else {
-        stepX = 1;
-        sideDistX = ((float)mapX + 1.0f - position_x) * deltaDistX;
+        step_x = 1;
+        distance_x = ((float)map_x + 1.0f - position_x) * delta_distance_x;
     }
     if(direction_y < 0) {
-        stepY = -1;
-        sideDistY = (position_y - (float)mapY) * deltaDistY;
+        step_y = -1;
+        distance_y = (position_y - (float)map_y) * delta_distance_y;
     }
     else {
-        stepY = 1;
-        sideDistY = ((float)mapY + 1.0f - position_y) * deltaDistY;
+        step_y = 1;
+        distance_y = ((float)map_y + 1.0f - position_y) * delta_distance_y;
     }
 
     while(!hit) {
-        if(sideDistX < sideDistY) {
-            sideDistX += deltaDistX;
-            mapX += stepX;
+        if(distance_x < distance_y) {
+            distance_x += delta_distance_x;
+            map_x += step_x;
             *side = 0;
         }
         else {
-            sideDistY += deltaDistY;
-            mapY += stepY;
+            distance_y += delta_distance_y;
+            map_y += step_y;
             *side = 1;
         }
-        if(tiles[mapX][mapY] > 0) hit = 1;
+        if(tiles[map_y][map_x] > 0) hit = 1;
     }
 
     if(*side == 0)
-        *perspective_distance = (sideDistX - deltaDistX);
+        *perspective_distance = (distance_x - delta_distance_x);
     else
-        *perspective_distance = (sideDistY - deltaDistY);
+        *perspective_distance = (distance_y - delta_distance_y);
 
-    *tile = tiles[mapX][mapY];
+    *tile = tiles[map_y][map_x];
 }
